@@ -1,4 +1,4 @@
-# flutter_app
+# Flutter Application
 
 A new Flutter application.
 
