@@ -1,3 +1,6 @@
+/*
+* @author : Garvit Kothari
+*/
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +10,7 @@ class EasterEgg extends StatelessWidget {
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(title: Text("You Found This"),),
+      appBar: AppBar(title: Text("You Found This Nice !!!"),),
       body: 
       new Container(
         decoration: BoxDecoration(

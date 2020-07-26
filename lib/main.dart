@@ -1,5 +1,10 @@
+/*
+* @author : Garvit Kothari
+*/
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/CalculatorScreen.dart';
+import 'package:flutter_app/DataBaseLogic.dart';
 import 'package:flutter_app/EasterEgg.dart';
 import 'package:flutter_app/SecondScreen.dart';
 
@@ -23,10 +28,9 @@ class MyApp extends StatelessWidget {
 class FirstScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
-    bool themeChange = false;
     return Scaffold(
 
-      appBar: AppBar(title: Text("Garvit"),),
+      appBar: AppBar(title: Text("Application"),),
       backgroundColor: Colors.black,
       body: Center(
         child: Column(
@@ -58,6 +62,15 @@ class FirstScreen extends StatelessWidget {
               navigateToInputScreen(context);
               },
             ),
+            RaisedButton(child: Text("DataBase"),
+              color: Colors.red,
+              onLongPress: () {
+                navigateToLongPress(context);
+              },
+              onPressed: () {
+                navigateToDataBaseScreen(context);
+              },
+            ),
           ],
         ),
       ),
@@ -80,6 +93,9 @@ class FirstScreen extends StatelessWidget {
 
   Future navigateToInputScreen(BuildContext context) async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => InputScreen()));
+  }
+  Future navigateToDataBaseScreen(BuildContext context) async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => DataBaseLogic()));
   }
 
 }

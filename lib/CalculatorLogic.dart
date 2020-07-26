@@ -1,3 +1,6 @@
+/*
+* @author : Garvit Kothari
+*/
 import 'dart:math';
 
 class CalculatorLogic {
