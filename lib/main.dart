@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/CalculatorScreen.dart';
-import 'package:flutter_app/DataBaseLogic.dart';
+import 'package:flutter_app/LoginScreen.dart';
 import 'package:flutter_app/EasterEgg.dart';
 import 'package:flutter_app/SecondScreen.dart';
 
@@ -95,7 +95,7 @@ class FirstScreen extends StatelessWidget {
     Navigator.push(context, MaterialPageRoute(builder: (context) => InputScreen()));
   }
   Future navigateToDataBaseScreen(BuildContext context) async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => DataBaseLogic()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 
 }
