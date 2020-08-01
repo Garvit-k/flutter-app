@@ -2,12 +2,15 @@
 * @author : Garvit Kothari
 */
 
-import 'dart:convert';
+
+import 'dart:math';
+import 'package:flutter_app/DatabaseHelper.dart';
+import 'package:flutter_app/LoginSuccess.dart';
 import 'package:flutter_app/PasswordOperation.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/SignupScreen.dart';
+import 'package:sqflite/sqflite.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -19,7 +22,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class Login extends State<LoginScreen> {
-  String hash="";
+  String status = "";
+  DatabaseHelper _databaseHelper = DatabaseHelper.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +73,7 @@ class Login extends State<LoginScreen> {
             children: <Widget>[
               RaisedButton(child: Text("Login"),
                 onPressed: () {
-                  submit(passController.text);
+                  submit(usernameController.text,passController.text);
                 },),
               RaisedButton(child: Text("Sign up"),
                 onPressed: () {
@@ -78,19 +82,34 @@ class Login extends State<LoginScreen> {
             ],
           ),
 
-          Text("Your password Hash is $hash",style: TextStyle(color: Colors.white),),
+          Text("$status",style: TextStyle(color: Colors.white),),
         ],
       ),
     );
   }
-  void submit(pass) {
-     setState(() {
-       hash = PasswordOperation().getPasswordHash(pass,"hello");
+  Future<void> submit(username,pass) async {
+     setState(() async{
+       List<Map<String,dynamic>> data = await _databaseHelper.getData(username);
+       String salt = data[0].values.toList()[3];
+       String hash = PasswordOperation().getPasswordHash(pass,salt);
+       if(data != null && hash == data[0].values.toList()[1]) {
+         navigateToLoginSuccess(context);
+       }
+       else {
+         setState(() {
+           status = "Username or Password is wrong";
+         });
+       }
      });
+
   }
 
   Future navigateToSignupScreen(BuildContext context) async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen()));
   }
-  
+
+  Future navigateToLoginSuccess(BuildContext context) async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginSuccess()));
+  }
+
 }

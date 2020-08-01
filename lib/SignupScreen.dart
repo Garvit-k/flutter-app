@@ -1,6 +1,9 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/PasswordOperation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/DatabaseHelper.dart';
 
 class SignupScreen extends StatefulWidget{
   @override
@@ -12,13 +15,15 @@ class SignupScreen extends StatefulWidget{
 }
 class Signup extends State<SignupScreen> {
   String hash="";
-
+  String da="";
+  DatabaseHelper _databaseHelper = DatabaseHelper.instance;
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     TextEditingController passController = new TextEditingController();
     TextEditingController usernameController = new TextEditingController();
+    TextEditingController emailController = new TextEditingController();
     return Scaffold(
       appBar: AppBar(title: Text("Sign up"),),
       backgroundColor: Colors.black,
@@ -57,17 +62,47 @@ class Signup extends State<SignupScreen> {
               ),
             ),
           ),
+          Text("Enter An Email",style: TextStyle(color: Colors.white),),
+          TextField(
+            controller: emailController,
+            style: TextStyle(color: Colors.black),
+            decoration: InputDecoration(
+              labelText: "Email",
+              hintText: 'Enter Email',
+              fillColor: Colors.white70,
+              filled: true,
+              hintStyle: TextStyle(color: Colors.white),
+              border: new OutlineInputBorder(
+                borderSide: new BorderSide(color: Colors.white),
+              ),
+            ),
+          ),
           RaisedButton(child: Text("Sign up"),
             onPressed: () {
-              submit(usernameController.text,passController.text);
+              submit(usernameController.text,passController.text,emailController.text);
             },),
+          Text("insert" + da),
         ],
       ),
     );
   }
 
-  void submit(username, pass) {
-    hash = PasswordOperation().getPasswordHash(pass, "hello");
+  void submit(username, pass,email) {
+    String salt = PasswordOperation().createCryptoRandomString();
+    hash = PasswordOperation().getPasswordHash(pass, salt);
+    setState(() {
+      Map<String, dynamic> data = {
+        _databaseHelper.columnUsername : username,
+        _databaseHelper.columnPassword : hash,
+        _databaseHelper.columnEmail : email,
+        _databaseHelper.columnSalt : salt
+      };
+
+      da=data.toString();
+      _databaseHelper.insertData(data);
+
+    });
+
   }
 
 }
