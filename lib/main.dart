@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/CalculatorScreen.dart';
+import 'package:flutter_app/CameraScreen.dart';
 import 'package:flutter_app/LoginScreen.dart';
 import 'package:flutter_app/EasterEgg.dart';
 import 'package:flutter_app/SecondScreen.dart';
@@ -62,13 +63,22 @@ class FirstScreen extends StatelessWidget {
               navigateToInputScreen(context);
               },
             ),
-            RaisedButton(child: Text("DataBase"),
+            RaisedButton(child: Text("Login"),
               color: Colors.red,
               onLongPress: () {
                 navigateToLongPress(context);
               },
               onPressed: () {
                 navigateToDataBaseScreen(context);
+              },
+            ),
+            RaisedButton(child: Text("Camera"),
+              color: Colors.red,
+              onLongPress: () {
+                navigateToLongPress(context);
+              },
+              onPressed: () {
+                navigateToCameraScreen(context);
               },
             ),
           ],
@@ -94,8 +104,13 @@ class FirstScreen extends StatelessWidget {
   Future navigateToInputScreen(BuildContext context) async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => InputScreen()));
   }
+
   Future navigateToDataBaseScreen(BuildContext context) async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
+
+  Future navigateToCameraScreen(BuildContext context) async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CameraScreen()));
   }
 
 }
