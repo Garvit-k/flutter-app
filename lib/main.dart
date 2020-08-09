@@ -7,6 +7,7 @@ import 'package:flutter_app/CalculatorScreen.dart';
 import 'package:flutter_app/CameraScreen.dart';
 import 'package:flutter_app/LoginScreen.dart';
 import 'package:flutter_app/EasterEgg.dart';
+import 'package:flutter_app/PageViewScreen.dart';
 import 'package:flutter_app/SecondScreen.dart';
 
 import 'InputScreen.dart';
@@ -81,6 +82,15 @@ class FirstScreen extends StatelessWidget {
                 navigateToCameraScreen(context);
               },
             ),
+            RaisedButton(child: Text("PageView"),
+              color: Colors.red,
+              onLongPress: () {
+                navigateToLongPress(context);
+              },
+              onPressed: () {
+                navigateToPageViewScreen(context);
+              },
+            ),
           ],
         ),
       ),
@@ -111,6 +121,10 @@ class FirstScreen extends StatelessWidget {
 
   Future navigateToCameraScreen(BuildContext context) async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => CameraScreen()));
+  }
+
+  Future navigateToPageViewScreen(BuildContext context) async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => PageViewScreen()));
   }
 
 }

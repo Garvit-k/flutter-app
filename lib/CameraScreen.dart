@@ -1,7 +1,10 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ImagePreviewScreen.dart';
 import 'package:logger/logger.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 class CameraScreen extends StatefulWidget {
   @override
@@ -36,6 +39,7 @@ class CameraScreenState extends State<CameraScreen> {
              ),
               SizedBox(height: 25,),
               cameraControllerWidget(context),
+              //flipCamera(),
             ],
           ),
         ),
@@ -67,7 +71,7 @@ class CameraScreenState extends State<CameraScreen> {
             FloatingActionButton(
               child: Icon(Icons.camera),
               onPressed: (){
-                capture(context);
+                navigateToImagePreview(context);
               },
             ),
           ],
@@ -75,6 +79,31 @@ class CameraScreenState extends State<CameraScreen> {
       ),
     );
   }
+/*
+  Widget flipCamera() {
+    return Align(
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        FloatingActionButton(
+          child: Icon(Icons.camera_front),
+          onPressed: (){
+            setState(() {
+              if(selectedCamera==1)
+                selectedCamera=0;
+              else
+                selectedCamera=0;
+
+              initaliseCamera(cameras[selectedCamera]);
+            });
+          },
+        ),
+      ],
+    ),
+    );
+  }
+  */
 
   @override
   void initState() {
@@ -82,7 +111,7 @@ class CameraScreenState extends State<CameraScreen> {
       cameras = availableCameras;
 
       if(cameras.length > 1) {
-        selectedCamera = 0;
+        selectedCamera = 1;
         setState(() {
 
         });
@@ -96,7 +125,7 @@ class CameraScreenState extends State<CameraScreen> {
       cameraController.dispose();
     }
 
-    cameraController = CameraController(cameraDescription, ResolutionPreset.ultraHigh);
+    cameraController = CameraController(cameraDescription, ResolutionPreset.max);
 
     cameraController.addListener(() {
       if(mounted) {
@@ -109,11 +138,15 @@ class CameraScreenState extends State<CameraScreen> {
         await cameraController.initialize();
       }
       on CameraException catch(e) {
-        log.d(TAG," Exception occured "+e.toString());
+        log.d(TAG," Exception occurred "+e.toString());
       }
 
   }
-  void capture(context) {
-    //TODO: add capture capabilities
+
+  Future navigateToImagePreview(BuildContext context) async {
+    final imagePath = join((await getTemporaryDirectory()).path, "${DateTime.now()}.png");
+    await cameraController.takePicture(imagePath);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ImagePreviewScreen(imagePath: imagePath,)));
   }
+
 }
